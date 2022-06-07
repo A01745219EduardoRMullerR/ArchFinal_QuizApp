@@ -1,0 +1,74 @@
+@import url(https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:wght@900&display=swap);
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+body{
+    background-color: #000000;
+}
+h1, h2, h3, h4 {
+    font-family: Nunito Sans;
+    font-weight: 900;
+    padding-top: 12px;
+    padding-bottom: 1px;
+}
+
+p {
+    font-family: Lora;
+    text-align: left;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.tarjeta-principal {
+    text-align: center;
+    background-color: #1322f3ec;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px #687b85;
+    margin-bottom: 2px;
+    padding-bottom: 0.5px;
+    padding-left: 10px;
+}
+
+.tarjeta {
+    text-align: left;
+    background-color: #537effec;
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px #687b85;
+    margin-bottom: 2px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+
+.botones {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.columna {
+    float: left;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    word-wrap: break-word;
+}
+
+.fila {
+    margin-bottom: 8px;
+}
+
+.fila::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.btn-sig, .btn-ant, .btn-enviar {
+    border: 0px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #273840;
+    font-family: Nunito Sans;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 8px;
+    min-width: 100px;
+    height: 50px;
+}
