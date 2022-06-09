@@ -35,11 +35,11 @@ To run the server type the following command at the terminal from the +taxEvatio
 
 Afterwards, point your web browser the server’s root URL. Most likely it will be localhost:4567
 
-=== 4+1 Architectural View Model
+== 4+1 Architectural View Model
 
 === Logical View
 
-Our Classes are defines bye the session that every user have every time he connects to our service, it saves all the necessary data and uses 
+Our Classes are defines by the session that every user have every time he connects to our service, it saves all the necessary data and uses 
 the lambda classes highscore, checkAnswers and questions to retrieve data from a dynamodb called highscores.
 rdoc-image:img/logicalView.png
 === Process View
@@ -54,21 +54,21 @@ rdoc-image:img/processView.png
 
 Our application is formed by 4 parts:
 
-server.rb: is the principal ruby function.
+server.rb: is the main ruby script, manages the gets and posts functions.
 
-models: it includes all the lambda functions
-storage: the dynamodb table
-public: all the graphical utilities.
-vies: here we have all our view we use to navigate our application
+models: it includes all the lambda functions and the .yaml files with the questions and answers
+storage: the dynamoDB table that is on the AWS servers
+public: all the graphical utilities like stylesheets
+views: here we have all our .erb files that we use
 
 rdoc-image:img/developmentView.png
 
 
 === Physical View
 
-Our application is formed physically by 2 parts, the client pc and aws servers.
-pc client: it only needs a web browser.
-aws servers: it runs the web server, manages the storage and and necessary lambda functions.
+There are only 2 main physical instances to our project.
+One is the client's computer on which the application is loaded and from where the user is going to run it.
+The second one is AWS, there is the dynamoDB table and both .yaml files with questions and answers.
 
 rdoc-image:img/physicalView.png
 
@@ -76,14 +76,15 @@ rdoc-image:img/physicalView.png
 
 === Scenarios
 
-Our application has 3 possible scenarios:
-- see highscores: the user only wants to see the highscores
-- answer quiz and upload grade: the user will answer the quiz and upload the grade.
-- answer quiz and not upload grade: the user will answer the quiz and will not upload the grade.
+Our project has 3 possible scenarios:
+- Consult highscores: the user is going to be able to see the table with the highscores.
+- answer quiz and upload grade: the user will answer the quiz and upload his/her grade.
+- answer quiz and not upload grade: the user will answer the quiz and won't upload the grade.
 
 rdoc-image:img/scenarios.png
 
 === Patterns Used
+
 We used the following patters:
 - <b>Domain-Specific Language</b>: The +server.rb+ file consists of a series of Sinatra routes. Sinatra is a DSL for creating web applications in Ruby.
 - <b>Model-View-Controller</b>: The application follows the classical web implementation of the MVC architectural pattern. The models (+.rb+ files) and views (+.erb+ files) are stored in the corresponding +models+ but they are there only for 
@@ -96,10 +97,14 @@ Fernando Silva (for mental health supporting)
 
 === References
 
-- M. Fowler. UML Distilled: A Brief Guide to the Standard Object Modeling Language, 3rd Edition. Addison-Wesley, 2003.
-
-- E. Gamma, R. Helm, R. Johnson, J. M. Vlissides. Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley, 1994.
+- Refactoring Guru. Design Patterns. https://refactoring.guru/es/design-patterns Accessed June 6, 2022.
+- ArielOrtiz.info. Quiz #1. https://arielortiz.info/apps/s202211/tc3049/quiz1/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #2. https://arielortiz.info/apps/s202211/tc3049/quiz2/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #3. https://arielortiz.info/apps/s202211/tc3049/quiz3/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #4. https://arielortiz.info/apps/s202211/tc3049/quiz4/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #5. https://arielortiz.info/apps/s202211/tc3049/quiz5/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #6. https://arielortiz.info/apps/s202211/tc3049/quiz6/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #7. https://arielortiz.info/apps/s202211/tc3049/quiz7/ Accessed June 6, 2022
+- ArielOrtiz.info. Quiz #8. https://arielortiz.info/apps/s202211/tc3049/quiz8/ Accessed June 6, 2022
 - R. Olsen. Design Patterns in Ruby. Addison-Wesley, 2007.
-- Ruby-Doc.org. RDoc Markup Reference. http://ruby-doc.org/stdlib-3.0.0/libdoc/rdoc/rdoc/RDoc/Markup.html Accessed May 7, 2021.
-- Ruby For Beginners. (2016). Sessions in Sinatra. 6/3/2021, de webapps-for-beginners Sitio web: https://webapps-for-beginners.rubymonstas.org/sessions/sinatra_sessions.html
-- Bootstrap. (2021). Heroes · Bootstrap v5.0. 6/3/2021, de Bootstrap Sitio web: https://getbootstrap.com/docs/5.0/examples/heroes/
+- rmb1905 (youtube channel). 2.01_The 4+1 Model. https://www.youtube.com/watch?v=yp2-_YbCuyM Accessed June 8, 2022
