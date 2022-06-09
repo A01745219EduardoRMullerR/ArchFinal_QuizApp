@@ -54,7 +54,7 @@ end
 #           +get_res_id(id)+ or an error message.
 def lambda_handler(event:, context:)
     HTTP_method = event.dig('requestContext', 'http', 'method')
-    case method
+    case HTTP_method
     when 'GET'
         query = event['queryStringParameteres'] || {}
         if query['id']
@@ -70,6 +70,6 @@ def lambda_handler(event:, context:)
             response(200, get_resource(path, host))
         end
     else 
-        response(405, {error: "Method #{method} not allowed."})
+        response(405, {error: "Method #{HTTP_method} not allowed."})
     end 
 end
