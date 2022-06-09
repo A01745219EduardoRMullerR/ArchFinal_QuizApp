@@ -39,9 +39,13 @@ Afterwards, point your web browser the server’s root URL. Most likely it will 
 
 === Logical View
 
-Our Classes are defines by the session that every user have every time he connects to our service, it saves all the necessary data and uses 
-the lambda classes highscore, checkAnswers and questions to retrieve data from a dynamodb called highscores.
+A session opens each time the user runs the application, he gets the questions with the lambda function question. 
+The app checks with the lambda function isRight.
+At the end of the session the user can upload his highscore and also at any time he can consult the highscores.
+
 rdoc-image:img/logicalView.png
+
+
 === Process View
 
 The process our web application will offer two possible starting options, see highscores and starting a quiz, this will ask for user, number of questions, will generate a list of 
@@ -59,9 +63,9 @@ server.rb: is the main ruby script, manages the gets and posts functions.
 models: it includes all the lambda functions and the .yaml files with the questions and answers
 storage: the dynamoDB table that is on the AWS servers
 public: all the graphical utilities like stylesheets
-views: here we have all our .erb files that we use
+views: here we have all our .erb files that we use as frontend
 
-rdoc-image:img/developmentView.png
+rdoc-image:img/devView.png
 
 
 === Physical View
@@ -78,21 +82,22 @@ rdoc-image:img/physicalView.png
 
 Our project has 3 possible scenarios:
 - Consult highscores: the user is going to be able to see the table with the highscores.
-- answer quiz and upload grade: the user will answer the quiz and upload his/her grade.
-- answer quiz and not upload grade: the user will answer the quiz and won't upload the grade.
+- Answer quiz and upload grade: the user will answer the quiz and upload his/her grade.
+- Answer quiz and not upload grade: the user will answer the quiz but won't upload the grade.
 
 rdoc-image:img/scenarios.png
 
 === Patterns Used
 
 We used the following patters:
-- <b>Domain-Specific Language</b>: The +server.rb+ file consists of a series of Sinatra routes. Sinatra is a DSL for creating web applications in Ruby.
+- <b>Domain-Specific Language</b>: Sinatra is a DSL for creating web applications in Ruby and +server.rb+ implements Sinatra routes
 - <b>Model-View-Controller</b>: The application follows the classical web implementation of the MVC architectural pattern. The models (+.rb+ files) and views (+.erb+ files) are stored in the corresponding +models+ but they are there only for 
 documentation purposes but they are stored and executed in aws lambda, +views+ directory. The controller is contained in +server.rb+ file.
 
-=== Acknowledments
-BBBootstrap Team (templates used)
-Fernando Silva (for mental health supporting)
+=== Acknowledments & Special Thanks
+
+Leonardo Castillejos
+Gerard Pique (for the laughs and giggles)
 
 
 === References
