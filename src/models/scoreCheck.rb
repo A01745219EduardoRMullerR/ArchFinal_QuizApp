@@ -138,8 +138,8 @@ end
 # 1. event:: HTTP method including the parameters.
 # Output:: Object that has the HTTP status code and a JSON response which could either be a notificarion or an error.
 def lambda_handler(event:, context:)
-    HTTP_method = event.dig('requestContext', 'http', 'method')
-    case HTTP_method
+    method = event.dig('requestContext', 'http', 'method')
+    case method
     when 'GET'
         handle_get
     when 'POST'
@@ -149,7 +149,7 @@ def lambda_handler(event:, context:)
             handle_bad_req
         end
     else
-        handle_bad_method(HTTP_method)
+        handle_bad_method(method)
     end
 end
 

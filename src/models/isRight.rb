@@ -52,9 +52,9 @@ end
 # 1. event:: HTTP method including the parameters.
 # Output::  Object containing the HTTP Status code and a JSON body that conrains the output in
 #           +check_res_id(id, answers)+ or an error.
-def lambda_handler(event: context:)
-    HTTP_method = event.dig('requestContext', 'http', 'method')
-    case HTTP_method
+def lambda_handler(event:, context:)
+    method = event.dig('requestContext', 'http', 'method')
+    case method
     when 'GET'
         query = event['queryStringParameters'] || {}
         if query['id']
@@ -70,7 +70,7 @@ def lambda_handler(event: context:)
                 response(404, {error: "The id #{id} was not found"})
             end
         else
-            response(405, {error: "Method #{HTTP_method} not allowed."})
+            response(405, {error: "Method #{method} not allowed."})
         end
     end
 end
