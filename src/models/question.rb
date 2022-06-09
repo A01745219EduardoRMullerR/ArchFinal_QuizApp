@@ -46,10 +46,10 @@ body: JSON.generate(body)
 }
 end
 
-# Lambda handler for the client's requests based on what the HTTP rest method is used
+# Lambda handler for the client's requests based on what the HTTP method is used
 # and parameters
 # Parameters: 
-# 1. event:: HTTP REST method sent by the user that also contains the parameters used.
+# 1. event:: HTTP method sent by the user that also contains the parameters used.
 # Output::  Object with the HTTP status and a JSON body containing either the resrouce output in
 #           +get_res_id(id)+ or an error message.
 def lambda_handler(event:, context:)

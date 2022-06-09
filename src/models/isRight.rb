@@ -47,9 +47,9 @@ def response(status, body)
     }
 end
 
-# Lambda handler for the client's requests based on the HTTP REST method used and the parameters sent.
+# Lambda handler for the client's requests based on the HTTP method used and the parameters sent.
 # Parameters: 
-# 1. event:: HTTP REST method including the parameters.
+# 1. event:: HTTP method including the parameters.
 # Output::  Object containing the HTTP Status code and a JSON body that conrains the output in
 #           +check_res_id(id, answers)+ or an error.
 def lambda_handler(event: context:)
