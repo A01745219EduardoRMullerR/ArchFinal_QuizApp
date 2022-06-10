@@ -53,8 +53,8 @@ end
 # Output::  Object with the HTTP status and a JSON body containing either the resrouce output in
 #           +get_res_id(id)+ or an error message.
 def lambda_handler(event:, context:)
-    HTTP_method = event.dig('requestContext', 'http', 'method')
-    case HTTP_method
+    method = event.dig('requestContext', 'http', 'method')
+    case method
     when 'GET'
         query = event['queryStringParameteres'] || {}
         if query['id']
@@ -70,6 +70,6 @@ def lambda_handler(event:, context:)
             response(200, get_resource(path, host))
         end
     else 
-        response(405, {error: "Method #{HTTP_method} not allowed."})
+        response(405, {error: "Method #{method} not allowed."})
     end 
 end
