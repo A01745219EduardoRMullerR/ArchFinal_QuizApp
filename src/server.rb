@@ -22,19 +22,19 @@ end
 # Parameters::
 #   id:: The id of the question that will be retrieved from aws
 get '/quiz/:id' do
-  @idPregunta =  params[:id]
+  @questionID =  params[:id]
   
-  parameters = '?id=' + @idPregunta
+  parameters = '?id=' + @questionID
   questionURL = BASE + parameters
   connection = Faraday.new(url: questionURL)
   response = connection.get
-  session[:idPregunta] = @idPregunta
+  session[:questionID] = @questionID
 
   
   @question = ''
   @answers = []
-  @preguntaActual = session[:preguntaActual]
-  @cantidadPreguntas = session[:cantidadPreguntas]
+  @actual_question = session[:actual_question]
+  @number_of_questions = session[:number_of_questions]
   if response.success?
     data = JSON.parse(response.body)
     puts data
@@ -46,8 +46,8 @@ end
 
 #Route that shows the final results of a quiz attempt
 get '/checkResults' do
-    @usuario = session[:usuario]
-    @cantidadPreguntas = session[:cantidadPreguntas]
+    @User = session[:User]
+    @number_of_questions = session[:number_of_questions]
     @score = session[:score]    
   erb :checkResults
 end
@@ -55,8 +55,8 @@ end
 #Route for supporting function to correctly create the URL using the session
 post'/submitAnswer' do
   @answer = params[:option]
-  @idPregunta = session[:idPregunta]
-    redirect '/checkAnswer/' + @idPregunta.to_s + '/' + @answer.to_s
+  @questionID = session[:questionID]
+    redirect '/checkAnswer/' + @questionID.to_s + '/' + @answer.to_s
 end
 
 #Route that invokes the screen where the user receives feedback
@@ -71,8 +71,8 @@ get'/checkAnswer/:id/:answer' do
   @question = ""
   @rightData = ""
   @correct = ""
-  @preguntaActual = session[:preguntaActual]
-  @cantidadPreguntas = session[:cantidadPreguntas]
+  @actual_question = session[:actual_question]
+  @number_of_questions = session[:number_of_questions]
 
   if response.success?
     data = JSON.parse(response.body)
@@ -89,11 +89,11 @@ get'/checkAnswer/:id/:answer' do
 end
 
 #Route for supporting function that has the logic to know when the user has answered all the questions
-post '/siguientePregunta' do
+post '/nextQuestion' do
     if !session[:listaPreguntas].empty? 
-      @siguientePregunta = session[:listaPreguntas].pop
-      session[:preguntaActual] = session[:preguntaActual] + 1
-      redirect '/quiz/' + @siguientePregunta.to_s
+      @nextQuestion = session[:listaPreguntas].pop
+      session[:actual_question] = session[:actual_question] + 1
+      redirect '/quiz/' + @nextQuestion.to_s
     else
       redirect '/checkResults'
     end  
@@ -102,15 +102,15 @@ end
 
 #Route that invokes a supporting function that does the apps setup
 post'/iniciaQuiz' do
-  cantidadPreguntas = params[:customRange1]
-  cantidadPreguntas =Integer(cantidadPreguntas)
-  usuario = params[:idUsuario]
-  session[:usuario] = usuario
-  session[:cantidadPreguntas] = cantidadPreguntas
-  session[:preguntaActual] = 1
+  number_of_questions = params[:customRange1]
+  number_of_questions =Integer(number_of_questions)
+  User = params[:idUser]
+  session[:User] = User
+  session[:number_of_questions] = number_of_questions
+  session[:actual_question] = 1
   session[:score] = 0
   b = (0..49).to_a
-  session[:listaPreguntas] = b.sample(cantidadPreguntas)
+  session[:listaPreguntas] = b.sample(number_of_questions)
   primerPregunta = session[:listaPreguntas].pop
   puts session[:horaInicio]
   redirect '/quiz/' + primerPregunta.to_s
@@ -134,9 +134,9 @@ post '/postHighscore' do
   dynamodb = Aws::DynamoDB::Client.new
   
   new_item = {
-    Username: session[:usuario],
+    Username: session[:User],
     Right: session[:score],
-    Total: session[:cantidadPreguntas]
+    Total: session[:number_of_questions]
   }
   
   dynamodb.put_item(table_name: 'HighScores', item: new_item)
