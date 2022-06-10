@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>README.rdoc</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>README.rdoc
+</h1>
+<div class='paths'>
+README.rdoc
+</div>
+<div class='last-update'>
+Last Update:
+<span class='datetime'>2022-06-09 20:49:53 -0500</span>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Software+Design+and+Architecture+Final+Project">Software Design and Architecture Final Project<span><a href="#label-Software+Design+and+Architecture+Final+Project">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<h2 id="label-Quiz+App+with+AWS+microservices">Quiz App with AWS microservices<span><a href="#label-Quiz+App+with+AWS+microservices">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<table class="rdoc-list note-list"><tbody><tr><td class='label'>Authors</td><td>
+<p>Eduardo Roberto Müller Romero (A01745219), Sebastian Morales Martín (A01376228)</p>
+</td></tr><tr><td class='label'>Date</td><td>
+<p>Jun 8, 2022</p>
+</td></tr></tbody></table>
+
+<p>If you haven’t done so already, install the following gems. At the terminal type: (if your&#39;e running it on a wsl you may need to use sudo)</p>
+
+<pre>$ gem install hanna-nouveau
+$ gem install sinatra
+$ gem install faraday
+$ gem install aws-sdk-dynamodb</pre>
+
+<p>The directory structure for the application and its documentation is as follows:</p>
+
+<pre>QuizApp/
+      ├─ doc/                        Folder produced by RDoc.
+      ├─ img/                        Folder for the documentation’s image files.
+      └─ src/                        Folder for the application’s source code.
+           ├─ public/                Folder for the server’s public documents.
+           │       └─ stylesheets/   Folder for the application’s CSS files.
+           ├─ models/                Folder for the application’s models.
+           └─ views/                 Folder for the application’s views (ERB files).</pre>
+
+<p>The root of the documentation should now be available at: <code>QuizApp/doc/index.html</code></p>
+
+<p>Use any web browser to see the result.</p>
+
+<h3 id="label-Running+the+Application">Running the Application<span><a href="#label-Running+the+Application">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>To run the server type the following command at the terminal from the <code>taxEvation/src</code> directory:</p>
+
+<pre>$ ruby  server.rb</pre>
+
+<p>Afterwards, point your web browser the server’s root URL. Most likely it will be localhost:4567</p>
+
+<h2 id="label-4-2B1+Architectural+View+Model">4+1 Architectural View Model<span><a href="#label-4-2B1+Architectural+View+Model">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<h3 id="label-Logical+View">Logical View<span><a href="#label-Logical+View">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>A session opens each time the user runs the application, he gets the questions with the lambda function question.  The app checks with the lambda function isRight. At the end of the session the user can upload his highscore and also at any time he can consult the highscores.</p>
+
+<p><img src="img/logicalview.png"></p>
+
+<h3 id="label-Process+View">Process View<span><a href="#label-Process+View">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The process our web application will offer two possible starting options, see highscores and starting a quiz, this will ask for user, number of questions, will generate a list of  questions, retrieve a question, answer a question, grade a question, ask another question. If there are no more questions it will show a grade and offer to upload your grade or not.</p>
+
+<p><img src="img/processView.png"></p>
+
+<h3 id="label-Development+View">Development View<span><a href="#label-Development+View">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>Our application is formed by 4 parts:</p>
+
+<p>server.rb: is the main ruby script, manages the gets and posts functions.</p>
+
+<p>models: it includes all the lambda functions and the .yaml files with the questions and answers storage: the dynamoDB table that is on the AWS servers public: all the graphical utilities like stylesheets views: here we have all our .erb files that we use as frontend</p>
+
+<p><img src="img/devView.png"></p>
+
+<h3 id="label-Physical+View">Physical View<span><a href="#label-Physical+View">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>There are only 2 main physical instances to our project. One is the client&#39;s computer on which the application is loaded and from where the user is going to run it. The second one is AWS, there is the dynamoDB table and both .yaml files with questions and answers.</p>
+
+<p><img src="img/physicalView.png"></p>
+
+<h3 id="label-Scenarios">Scenarios<span><a href="#label-Scenarios">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>Our project has 3 possible scenarios:</p>
+<ul><li>
+<p>Consult highscores: the user is going to be able to see the table with the highscores.</p>
+</li><li>
+<p>Answer quiz and upload grade: the user will answer the quiz and upload his/her grade.</p>
+</li><li>
+<p>Answer quiz and not upload grade: the user will answer the quiz but won&#39;t upload the grade.</p>
+</li></ul>
+
+<p><img src="img/scenarios.png"></p>
+
+<h3 id="label-Patterns+Used">Patterns Used<span><a href="#label-Patterns+Used">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>We used the following patters:</p>
+<ul><li>
+<p><strong>Domain-Specific Language</strong>: Sinatra is a DSL for creating web applications in Ruby and <code>server.rb</code> implements Sinatra routes</p>
+</li><li>
+<p><strong>Model-View-Controller</strong>: The application follows the classical web implementation of the MVC architectural pattern. The models (<code>.rb</code> files) and views (<code>.erb</code> files) are stored in the corresponding <code>models</code> but they are there only for </p>
+</li></ul>
+
+<p>documentation purposes but they are stored and executed in aws lambda, <code>views</code> directory. The controller is contained in <code>server.rb</code> file.</p>
+
+<h3 id="label-Acknowledments+-26+Special+Thanks">Acknowledments &amp; Special Thanks<span><a href="#label-Acknowledments+-26+Special+Thanks">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<h3 id="label-References">References<span><a href="#label-References">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<ul><li>
+<p>Refactoring Guru. Design Patterns. <a href="https://refactoring.guru/es/design-patterns">refactoring.guru/es/design-patterns</a> Accessed June 6, 2022.</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #1. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz1">arielortiz.info/apps/s202211/tc3049/quiz1</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #2. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz2">arielortiz.info/apps/s202211/tc3049/quiz2</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #3. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz3">arielortiz.info/apps/s202211/tc3049/quiz3</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #4. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz4">arielortiz.info/apps/s202211/tc3049/quiz4</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #5. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz5">arielortiz.info/apps/s202211/tc3049/quiz5</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #6. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz6">arielortiz.info/apps/s202211/tc3049/quiz6</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #7. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz7">arielortiz.info/apps/s202211/tc3049/quiz7</a>/ Accessed June 6, 2022</p>
+</li><li>
+<p>ArielOrtiz.info. Quiz #8. <a href="https://arielortiz.info/apps/s202211/tc3049/quiz8">arielortiz.info/apps/s202211/tc3049/quiz8</a>/ Accessed June 6, 2022</p>
+</li><li><ol style="list-style-type: upper-alpha"><li>
+<p>Olsen. Design Patterns in Ruby. Addison-Wesley, 2007.</p>
+</li></ol>
+</li><li>
+<p>rmb1905 (youtube channel). 2.01_The 4+1 Model. <a href="https://www.youtube.com/watch?v=yp2-_YbCuyM">www.youtube.com/watch?v=yp2-_YbCuyM</a> Accessed June 8, 2022</p>
+</li></ul>
+</div>
+<div id='context'>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/jeremyevans/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>
