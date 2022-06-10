@@ -11,7 +11,7 @@ require 'aws-sdk-dynamodb'
 # Constant containing a dynamo client instance
 D_DB = Aws::DynamoDB::Client.new
 # Constant that stores the name of the table used
-TABLE = 'scores'
+TABLE = 'hallOfFame'
 
 # The +HTTP_Status+ class represents all possible status in the program.
 class HTTP_Status
@@ -51,10 +51,9 @@ end
 #           * Time
 def make_list(list)
     list.map do |item| {
-        'User' => item['User'],
-        'Correct' => item['Correct'].to_i,
-        'Total' => item['Total'].to_i,
-        'Time' => item['EndTimeStamp'].to_i - item['timeStamp'].to_i
+        'user' => item['user'],
+        'score' => item['score'],
+        'nQuestions' => item['nQuestions']
     }
 end
 end
