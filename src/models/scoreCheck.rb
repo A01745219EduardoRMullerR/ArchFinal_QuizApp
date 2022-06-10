@@ -57,23 +57,6 @@ def make_list(list)
 end
 end
 
-# Sort the items obtained from the table "hallOfFame"
-# Parameters: 
-# 1. list:: entries in the table "hallOfFame"
-# Output:: All the entries in the table "hallOfFame" sorted
-def sort(list)
-    list.sort! {|a,b| a['score'] <=> b['score']}
-    list.sort! {|a,b| a['nQuestions'] <=> b['nQuestions']}
-end
-
-# Get hallOfFame stored in the table "hallOfFame", sorts the items and prepares the format for a JSON response
-# Output:: All entries in the table "hallOfFame" sorted and formatted
-def get_and_prepare_data
-    list = D_DB.scan(table_name: TABLE).items
-    sort(list)
-    make_list(list)
-end
-
 # Parses the JSON body given by the client to check if the parameters "user" and "timeStamp" exist within it.
 # Parameters:
 # 1. body:: Body of the client's request, expected to include "user", "score", and "nQuestions"
@@ -91,6 +74,15 @@ def parse_req(body)
     end
 end
 
+
+# Get hallOfFame stored in the table "hallOfFame", sorts the items and prepares the format for a JSON response
+# Output:: All entries in the table "hallOfFame" sorted and formatted
+def get_and_prepare_data
+    list = D_DB.scan(table_name: TABLE).items
+    sort(list)
+    make_list(list)
+end
+
 # Insert a row into the table "hallOfFame"
 # Parameters: 
 # 1. body:: JSON Body request from the client. expected to contain all the information needed:
@@ -105,6 +97,15 @@ def insert_data_to_table(body)
     else 
         false
     end
+end
+
+# Sort the items obtained from the table "hallOfFame"
+# Parameters: 
+# 1. list:: entries in the table "hallOfFame"
+# Output:: All the entries in the table "hallOfFame" sorted
+def sort(list)
+    list.sort! {|a,b| a['score'] <=> b['score']}
+    list.sort! {|a,b| a['nQuestions'] <=> b['nQuestions']}
 end
 
 # Handles 'GET' methods
