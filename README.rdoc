@@ -10,7 +10,6 @@ If you haven’t done so already, install the following gems. At the terminal ty
     $ gem install sinatra
     $ gem install faraday
     $ gem install aws-sdk-dynamodb
-    $ gem install time
 
 The directory structure for the application and its documentation is as follows:
 
@@ -43,7 +42,7 @@ A session opens each time the user runs the application, he gets the questions w
 The app checks with the lambda function isRight.
 At the end of the session the user can upload his highscore and also at any time he can consult the highscores.
 
-rdoc-image:img/logicalView.png
+rdoc-image:img/logicalview.png
 
 
 === Process View

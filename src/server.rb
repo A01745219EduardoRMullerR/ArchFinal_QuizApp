@@ -8,7 +8,6 @@
 require 'json'
 require 'faraday'
 require 'sinatra'
-require 'time'
 require 'aws-sdk-dynamodb'
 
 #Allows for sessions to be used by server.rb
@@ -49,10 +48,7 @@ end
 get '/checkResults' do
     @usuario = session[:usuario]
     @cantidadPreguntas = session[:cantidadPreguntas]
-    @score = session[:score]
-    @horaInicio = session[:horaInicio]
-    @horaFinal = Time.now.getutc
-    
+    @score = session[:score]    
   erb :checkResults
 end
 
@@ -116,9 +112,6 @@ post'/iniciaQuiz' do
   b = (0..49).to_a
   session[:listaPreguntas] = b.sample(cantidadPreguntas)
   primerPregunta = session[:listaPreguntas].pop
-  
-  
-  session[:horaInicio] = Time.now.getutc
   puts session[:horaInicio]
   redirect '/quiz/' + primerPregunta.to_s
 end
@@ -142,8 +135,6 @@ post '/postHighscore' do
   
   new_item = {
     Username: session[:usuario],
-    timestamp: session[:horaInicio].to_i,
-    EndTimestamp: Time.now.getutc.to_i,
     Right: session[:score],
     Total: session[:cantidadPreguntas]
   }
