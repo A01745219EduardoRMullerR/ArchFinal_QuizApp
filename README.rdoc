@@ -95,10 +95,6 @@ documentation purposes but they are stored and executed in aws lambda, +views+ d
 
 === Acknowledments & Special Thanks
 
-Leonardo Castillejos
-Gerard Pique (for the laughs and giggles)
-
-
 === References
 
 - Refactoring Guru. Design Patterns. https://refactoring.guru/es/design-patterns Accessed June 6, 2022.
