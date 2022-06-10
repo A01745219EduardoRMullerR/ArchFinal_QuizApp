@@ -40,15 +40,14 @@ def response(status, body)
     }
 end
 
-# Generates an object with all data in the dynamo table "scores" as a list
+# Generates an object with all data in the dynamo table "hallOfFame" as a list
 # Parameters: 
-# 1. list:: entries in the table "scores"
+# 1. list:: entries in the table "hallOfFame"
 # Output::  Object that includes all data entries in list format.
 #           The list format comes as follows:
-#           * User
-#           * Correct_answers
-#           * Total
-#           * Time
+#           * user
+#           * score
+#           * nQuestions
 def make_list(list)
     list.map do |item| {
         'user' => item['user'],
@@ -58,32 +57,32 @@ def make_list(list)
 end
 end
 
-# Sort the items obtained from the table "scores"
+# Sort the items obtained from the table "hallOfFame"
 # Parameters: 
-# 1. list:: entries in the table "scores"
-# Output:: All the entries in the table "scores" sorted
+# 1. list:: entries in the table "hallOfFame"
+# Output:: All the entries in the table "hallOfFame" sorted
 def sort(list)
-    list.sort! {|a,b| a['Correct'] <=> b['Correct']}
-    list.sort! {|a,b| a['Total'] <=> b['Total']}
+    list.sort! {|a,b| a['score'] <=> b['score']}
+    list.sort! {|a,b| a['nQuestions'] <=> b['nQuestions']}
 end
 
-# Get scores stored in the table "scores", sorts the items and prepares the format for a JSON response
-# Output:: All entries in the table "scores" sorted and formatted
+# Get hallOfFame stored in the table "hallOfFame", sorts the items and prepares the format for a JSON response
+# Output:: All entries in the table "hallOfFame" sorted and formatted
 def get_and_prepare_data
     list = D_DB.scan(table_name: TABLE).items
     sort(list)
     make_list(list)
 end
 
-# Parses the JSON body given by the client to check if the parameters "User" and "timeStamp" exist within it.
+# Parses the JSON body given by the client to check if the parameters "user" and "timeStamp" exist within it.
 # Parameters:
-# 1. body:: Body of the client's request, expected to include "User" and "timeStamp", "endTimeStamp", "Correct", and "Total"
-# Output:: Body formatted to be inserted into the table "scores" in the database.
+# 1. body:: Body of the client's request, expected to include "user", "score", and "nQuestions"
+# Output:: Body formatted to be inserted into the table "hallOfFame" in the database.
 def parse_req(body)
     if body
         begin
             data = JSON.parse(body)
-            data.key?('User')
+            data.key?('user')
         rescue JSON::ParserError
             nil
         end
@@ -92,14 +91,12 @@ def parse_req(body)
     end
 end
 
-# Insert a row into the table "scores"
+# Insert a row into the table "hallOfFame"
 # Parameters: 
 # 1. body:: JSON Body request from the client. expected to contain all the information needed:
-#               * User
-#               * timeStamp
-#               * endTimeStamp
-#               * Correct
-#               * Total
+#               * user
+#               * score
+#               * nQuestions
 def insert_data_to_table(body)
     data = parse_req(body)
     if data
@@ -111,7 +108,7 @@ def insert_data_to_table(body)
 end
 
 # Handles 'GET' methods
-# Output:: A response with HTTP code 200 and all the content in the table "scores"
+# Output:: A response with HTTP code 200 and all the content in the table "hallOfFame"
 def handle_get
     response(HTTP_Status::OK, get_and_prepare_data)
 end
