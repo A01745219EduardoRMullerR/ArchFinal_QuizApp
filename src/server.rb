@@ -139,7 +139,7 @@ post '/postHighscore' do
     Total: session[:number_of_questions]
   }
   
-  dynamodb.put_item(table_name: 'HighScores', item: new_item)
+  dynamodb.put_item(table_name: 'scores', item: new_item)
   
   redirect '/highscore'
   
