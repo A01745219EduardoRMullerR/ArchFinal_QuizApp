@@ -1,7 +1,9 @@
-# Ruby app
-# Date: June 1st, 2022
-# Authors:  Eduardo Müller Romero
-#           Sebastian Morales Martin
+# Final Project: Quiz Application with Microservices
+# Date: 1-June-2022
+# Authors: 
+#
+#          Sebastian Morales Martin         A01376228
+#          Eduardo Roberto Müller Romero    A01745219
 
 require 'json'
 require 'yaml'

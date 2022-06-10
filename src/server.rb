@@ -10,8 +10,13 @@ require 'faraday'
 require 'sinatra'
 require 'aws-sdk-dynamodb'
 
+
 #Allows for sessions to be used by server.rb
 enable :sessions
+
+BASE = 'https://ua7glmcmj9.execute-api.us-east-1.amazonaws.com/default/question'
+lambdaCheckAnswer = 'https://ct5l2v35e0.execute-api.us-east-1.amazonaws.com/default/isRight'
+lambdaHighscore = 'https://muw22njfgh.execute-api.us-east-1.amazonaws.com/default/scoreCheck'
 
 #Home route, shows the index
 get '/' do
@@ -49,7 +54,7 @@ get '/checkResults' do
     @User = session[:User]
     @number_of_questions = session[:number_of_questions]
     @score = session[:score]    
-  erb :checkResults
+  erb :results
 end
 
 #Route for supporting function to correctly create the URL using the session
@@ -85,7 +90,7 @@ get'/checkAnswer/:id/:answer' do
   if @rightData
     session[:score] = session[:score] + 1
   end
-    erb :checkAnswer 
+    erb :answer 
 end
 
 #Route for supporting function that has the logic to know when the user has answered all the questions
@@ -101,7 +106,7 @@ post '/nextQuestion' do
 end
 
 #Route that invokes a supporting function that does the apps setup
-post'/iniciaQuiz' do
+post'/startQuiz' do
   number_of_questions = params[:customRange1]
   number_of_questions =Integer(number_of_questions)
   User = params[:idUser]
@@ -126,7 +131,7 @@ get'/highscore' do
       @highscores = JSON.parse(response.body)
     end
     puts @highscores
-    erb :highscore
+    erb :highScores
 end
 
 #Route that invokes lambda to upload the user score 
@@ -134,9 +139,9 @@ post '/postHighscore' do
   dynamodb = Aws::DynamoDB::Client.new
   
   new_item = {
-    Username: session[:User],
-    Right: session[:score],
-    Total: session[:number_of_questions]
+    user: session[:User],
+    score: session[:score],
+    nQuestions: session[:number_of_questions]
   }
   
   dynamodb.put_item(table_name: 'scores', item: new_item)

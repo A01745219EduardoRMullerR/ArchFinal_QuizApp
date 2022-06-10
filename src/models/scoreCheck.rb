@@ -1,7 +1,9 @@
-# Ruby app
-# Date: June 1st, 2022
-# Authors:  Eduardo Müller Romero
-#           Sebastian Morales Martin
+# Final Project: Quiz Application with Microservices
+# Date: 1-June-2022
+# Authors: 
+#
+#          Sebastian Morales Martin         A01376228
+#          Eduardo Roberto Müller Romero    A01745219
 
 require 'json'
 require 'aws-sdk-dynamodb'
@@ -82,7 +84,7 @@ def parse_req(body)
     if body
         begin
             data = JSON.parse(body)
-            data.key?('User') and data.key?('timeStamp') ? data : nil
+            data.key?('User')
         rescue JSON::ParserError
             nil
         end
